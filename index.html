@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="app">
+        <el-container>
+            <el-header class="header-bar">
+                <div class="real-header-bar">
+                    <span id="title">拜佛模拟器</span>
+                    <el-button type="danger" id="rmc" @click="remove_all">清除缓存</el-button>
+                </div>
+            </el-header>
+            <el-main class="main-area">
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                        <span>拜佛</span>
+                        <el-button style="float: right; padding: 3px 0" type="text" @click="about">开发者信息</el-button>
+                    </div>
+                    <el-carousel :autoplay="false" trigger="click" height="280px" indicator-position="outside"
+                        @change="onchange">
+                        <el-carousel-item v-for="item in godlist" :key="item.name" style="display:flex;justify-content: center;">
+                            <el-image style="width: 450px; height: 280px" :src="item.url" fit="contain"></el-image>
+
+                        </el-carousel-item>
+                    </el-carousel>
+
+                    <div class="card-body">
+                        <span>
+                            您已经拜了
+                            <strong>{{godlist[currentID].name}}</strong>
+                            共:
+                            <strong>{{godlist[currentID].cnt}}</strong>
+                            次
+                        </span>
+                        <el-button type="primary" style="margin-top:10px;" @click="onclick">拜一拜</el-button>
+                    </div>
+                </el-card>
+            </el-main>
+        </el-container>
+    </div>
+</body>
+<!-- import Vue before Element -->
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    var vue = new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                visible: false,
+                currentID: 0,
+                godlist: [
+
+                    {
+                        url: "https://tse3-mm.cn.bing.net/th/id/OIP.OtMNIKeHBFE6D02pv8tIHwAAAA?pid=Api&rs=1",
+                        name: "耶稣",
+                        cnt: 0
+                    },
+                    {
+                        url: "https://tse1-mm.cn.bing.net/th/id/OIP.NY2NEpv7gIR-BAccjIqR4gHaM2?pid=Api&rs=1",
+                        name: "释迦摩尼",
+                        cnt: 0
+                    },
+                    {
+                        url: "http://img.mp.itc.cn/upload/20170622/e72a383d9b36438ab04c1d218ea563ef_th.jpg",
+                        name: "孔子",
+                        cnt: 0
+                    },
+                    {
+                        url: "https://gss0.baidu.com/9vo3dSag_xI4khGko9WTAnF6hhy/zhidao/wh%3D600%2C800/sign=14693d52a851f3dec3e7b162a4dedc27/500fd9f9d72a6059ac5214822f34349b023bbaec.jpg",
+                        name: "老子",
+                        cnt: 0
+                    },
+                    {
+                        url: "http://enxiangedu.com/uploadfile/20170911/1505091596522593.jpg",
+                        name: "王铮",
+                        cnt: 0
+                    },
+                    {
+                        url: "https://5b0988e595225.cdn.sohucs.com/images/20170810/67d9f37232ff4f60af980de6229b6193.jpeg",
+                        name: "犍尼萨",
+                        cnt: 0
+                    },
+                    {
+                        url: "https://tse2-mm.cn.bing.net/th/id/OIP.ZQQTKdYOXWKibfVzmW3ZWwAAAA?pid=Api&rs=1",
+                        name: "拉",
+                        cnt: 0
+                    }
+                ]
+            }
+        },
+        methods: {
+            onchange(event) {
+                this.currentID = event;
+            },
+            onload() {
+                if (localStorage.getItem('godlist'))
+                    this.godlist = JSON.parse(localStorage.getItem('godlist'));
+            },
+            onclick() {
+                this.godlist[this.currentID].cnt += 1;
+                localStorage.setItem('godlist', JSON.stringify(this.godlist));
+            },
+            remove_all() {
+                this.$confirm('此操作将永久删除历史记录, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                    localStorage.clear();
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            about() {
+                this.$alert('Powered By steven12138', '开发者信息', {
+                    confirmButtonText: '确定',
+                });
+            }
+        }
+    })
+    window.onload = vue.onload;
+</script>
+
+</html>
