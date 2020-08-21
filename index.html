@@ -177,7 +177,8 @@
                         var current = localStorage.getItem('godlist');
                         current = JSON.parse(current);
                         current.push(item);
-                        console.log(current)
+                        localStorage.setItem('godlist',JSON.stringify(current));
+                        self.godlist=current;
                     }).catch(() => {});
                 }).catch(() => {});
             }
