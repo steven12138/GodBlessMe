@@ -26,7 +26,8 @@
                     </div>
                     <el-carousel :autoplay="false" trigger="click" height="280px" indicator-position="outside"
                         @change="onchange">
-                        <el-carousel-item v-for="item in godlist" :key="item.name" style="display:flex;justify-content: center;">
+                        <el-carousel-item v-for="item in godlist" :key="item.name"
+                            style="display:flex;justify-content: center;">
                             <el-image style="width: 450px; height: 280px" :src="item.url" fit="contain"></el-image>
 
                         </el-carousel-item>
@@ -129,7 +130,22 @@
                 });
             },
             about() {
-                this.$alert('Powered By steven12138', '开发者信息', {
+                const h = this.$createElement;
+                this.$msgbox({
+                    title: '消息',
+                    message: h('div', null, [
+                        h('span', null, 'Powered By '),
+                        h('i', {
+                            style: 'color: teal',
+                        }, 'steven12138'),
+                        h('br',null),
+                        h('span',null,'添加更多神可以联系我'),
+                        h('br',null),
+                        h('span',null,'邮箱:'),
+                        h('i', {
+                            style: 'color: teal',
+                        }, '18611209860@163.com'),
+                    ]),
                     confirmButtonText: '确定',
                 });
             }
