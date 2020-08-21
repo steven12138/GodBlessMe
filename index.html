@@ -15,7 +15,10 @@
             <el-header class="header-bar">
                 <div class="real-header-bar">
                     <span id="title">拜神模拟器</span>
-                    <el-button type="danger" id="rmc" @click="remove_all">清除缓存</el-button>
+                    <div>
+                        <el-button type="success" id="adg" @click="add_god">添加神仙</el-button>
+                        <el-button type="danger" id="rmc" @click="remove_all">清除缓存</el-button>
+                    </div>
                 </div>
             </el-header>
             <el-main class="main-area">
@@ -82,11 +85,6 @@
                         cnt: 0
                     },
                     {
-                        url: "http://enxiangedu.com/uploadfile/20170911/1505091596522593.jpg",
-                        name: "王铮",
-                        cnt: 0
-                    },
-                    {
                         url: "https://5b0988e595225.cdn.sohucs.com/images/20170810/67d9f37232ff4f60af980de6229b6193.jpeg",
                         name: "犍尼萨",
                         cnt: 0
@@ -106,6 +104,8 @@
             onload() {
                 if (localStorage.getItem('godlist'))
                     this.godlist = JSON.parse(localStorage.getItem('godlist'));
+                else
+                    localStorage.setItem('godlist', JSON.stringify(this.godlist));
             },
             onclick() {
                 this.godlist[this.currentID].cnt += 1;
@@ -138,16 +138,48 @@
                         h('i', {
                             style: 'color: teal',
                         }, 'steven12138'),
-                        h('br',null),
-                        h('span',null,'添加更多神可以联系我'),
-                        h('br',null),
-                        h('span',null,'邮箱:'),
+                        h('br', null),
+                        h('span', null, '添加更多神可以联系我'),
+                        h('br', null),
+                        h('span', null, '邮箱:'),
                         h('i', {
                             style: 'color: teal',
                         }, '18611209860@163.com'),
                     ]),
                     confirmButtonText: '确定',
                 });
+            },
+            add_god() {
+                var self = this;
+                var success = false;
+                var item = {
+                    "url": "",
+                    "name": "",
+                    "cnt": 0
+                }
+                this.$prompt('请输入名字', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(({
+                    value
+                }) => {
+                    item.name = value
+                    this.$prompt('请输入图片url', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        inputPattern: /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/,
+                        inputErrorMessage: '链接格式不正确'
+                    }).then(({
+                        value
+                    }) => {
+                        item.url = value
+                        success = true;
+                        var current = localStorage.getItem('godlist');
+                        current = JSON.parse(current);
+                        current.push(item);
+                        console.log(current)
+                    }).catch(() => {});
+                }).catch(() => {});
             }
         }
     })
