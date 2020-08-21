@@ -175,13 +175,14 @@
                         inputPattern: /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/,
                         inputErrorMessage: '链接格式不正确'
                     }).then(({
-                        value1
+                        value
                     }) => {
-                        item.url = value1
+                        item.url = value
                         success = true;
                         var current = localStorage.getItem('godlist');
                         current = JSON.parse(current);
                         current.push(item);
+                        console.log(item)
                         localStorage.setItem('godlist', JSON.stringify(current));
                         self.godlist = current;
                     }).catch(() => {});
