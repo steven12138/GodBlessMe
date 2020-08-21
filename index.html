@@ -44,13 +44,15 @@
                             <strong>{{godlist[currentID].cnt}}</strong>
                             次
                         </span>
-                        <el-button type="primary" style="margin-top:10px;" @click="onclick">拜一拜</el-button>
+                        <el-button class="submit" type="primary" style="margin-top:10px;" @click="onclick">拜一拜</el-button>
                     </div>
                 </el-card>
             </el-main>
+            <span @click="add_bdf" style="position:absolute;right:90px;bottom:560px;font-size:10px;color:rgb(217, 228, 236);cursor: pointer;">隐藏内容</span>
         </el-container>
     </div>
 </body>
+<script src="./anime.min.js"></script>
 <!-- import Vue before Element -->
 <script src="https://unpkg.com/vue/dist/vue.js"></script>
 <!-- import JavaScript -->
@@ -61,6 +63,7 @@
         data: function () {
             return {
                 visible: false,
+                show: true,
                 currentID: 0,
                 godlist: [
 
@@ -170,17 +173,21 @@
                         inputPattern: /^((ht|f)tps?):\/\/[\w\-]+(\.[\w\-]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?$/,
                         inputErrorMessage: '链接格式不正确'
                     }).then(({
-                        value
+                        value1
                     }) => {
-                        item.url = value
+                        item.url = value1
                         success = true;
                         var current = localStorage.getItem('godlist');
                         current = JSON.parse(current);
                         current.push(item);
-                        localStorage.setItem('godlist',JSON.stringify(current));
-                        self.godlist=current;
+                        localStorage.setItem('godlist', JSON.stringify(current));
+                        self.godlist = current;
                     }).catch(() => {});
                 }).catch(() => {});
+            },
+            add_bdf(){
+                this.godlist.push({url:"http://enxiangedu.com/uploadfile/20170911/1505091596522593.jpg",name:"王铮",cnt:0})
+                this.godlist.push({url:"https://cdn.jiemodui.com/img/Public/Uploads/item/20180731/1533028803833930.jpg",name:"孙玉磊",cnt:0})
             }
         }
     })
